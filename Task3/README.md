@@ -1,6 +1,6 @@
 # Задание 3. Оценка Data Encryption at Rest and In Transit
 
-Стратегия защиты данных для всей целевой системы (Task2). Классы C0–C4 и теги описаны в [Task1/data-protection.md](../Task1/data-protection.md).
+Стратегия защиты данных для всей целевой системы (Task2). Классы C0–C4 описаны в разделе 1 ниже, теги — в [Task1/data-protection.md](../Task1/data-protection.md).
 
 ## 1. Параметры классификации
 
