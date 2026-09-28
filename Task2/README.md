@@ -31,22 +31,22 @@ Privacy by Design встроен в архитектуру как **отдель
 
 ## 2. Новые блоки Privacy by Design
 
-| Блок | Технология | Функция | Закрывает (Task1) |
+| Блок | Технология | Функция | Какую проблему закрывает |
 |---|---|---|---|
-| **IAM** | Keycloak (realm `patients` и `staff`, федерация с AD, OTP / ЕСИА, MFA) | Единая аутентификация, персональные учётки, SSO | P-03, P-15, P-18 |
-| **Policy Engine** | OPA (Rego, policy-as-code в Git) | RBAC + ABAC-решение на каждый запрос (PDP); PEP — в API Gateway и сервисах | P-03 |
-| **Vault + HSM** | HashiCorp Vault / OpenBao (Transit, Transform, PKI), HSM / СКЗИ | Ключи KEK/DEK, envelope encryption, токенизация, секреты, ротация | P-02, P-09 |
-| **Tokenization / Pseudonymization** | Vault Transform + token store | `patient_token`, `order_id`, `episode_token` вместо ФИО в неклинических доменах | P-07, P-17 |
-| **Consent Service** | Java + Postgres | Согласия по целям (лечение, уведомления, маркетинг, передача партнёрам) с версией текста и сроком; отзыв → событие `consent.revoked` | P-11 |
-| **Privacy Requests & Retention** | Java + Kafka | Запросы субъекта (доступ, исправление, удаление, выгрузка), SLA 10 рабочих дней; удаление по сроку из тега `retention`; crypto-shredding | P-12 |
-| **Data Catalog + Lineage** | OpenMetadata | Словарь тегов, автоклассификация PII, владельцы доменов, Lineage от источника до витрины | P-01, P-13 |
-| **Audit Log Service** | Java → ClickHouse (append-only, WORM, TTL по закону) | Кто, что, когда, зачем читал или менял; основа для UEBA | P-04 |
-| **SIEM + UEBA** | Wazuh / MaxPatrol SIEM + правила на ClickHouse | Корреляция, аномалии (массовый просмотр карт, ночной доступ, break-glass), инциденты → уведомление РКН за 24/72 ч | P-22 |
-| **DLP** | InfoWatch Traffic Monitor / Solar Dozor | Контроль USB, печати, почты, мессенджеров на АРМ | P-05, P-21 |
+| **IAM** | Keycloak (realm `patients` и `staff`, федерация с AD, OTP / ЕСИА, MFA) | Единая аутентификация, персональные учётки, SSO | доступ не разграничен, вход по паролю |
+| **Policy Engine** | OPA (Rego, policy-as-code в Git) | RBAC + ABAC-решение на каждый запрос (PDP); PEP — в API Gateway и сервисах | доступ к любой медкарте |
+| **Vault + HSM** | HashiCorp Vault / OpenBao (Transit, Transform, PKI), HSM / СКЗИ | Ключи KEK/DEK, envelope encryption, токенизация, секреты, ротация | открытые файлы, один сервер |
+| **Tokenization / Pseudonymization** | Vault Transform + token store | `patient_token`, `order_id`, `episode_token` вместо ФИО в неклинических доменах | ФИО в платежах и у лаборатории |
+| **Consent Service** | Java + Postgres | Согласия по целям (лечение, уведомления, маркетинг, передача партнёрам) с версией текста и сроком; отзыв → событие `consent.revoked` | отзыв согласия не учитывается |
+| **Privacy Requests & Retention** | Java + Kafka | Запросы субъекта (доступ, исправление, удаление, выгрузка), SLA 10 рабочих дней; удаление по сроку из тега `retention`; crypto-shredding | нельзя удалить по запросу |
+| **Data Catalog + Lineage** | OpenMetadata | Словарь тегов, автоклассификация PII, владельцы доменов, Lineage от источника до витрины | нет классификации и Lineage |
+| **Audit Log Service** | Java → ClickHouse (append-only, WORM, TTL по закону) | Кто, что, когда, зачем читал или менял; основа для UEBA | нет журнала доступа |
+| **SIEM + UEBA** | Wazuh / MaxPatrol SIEM + правила на ClickHouse | Корреляция, аномалии (массовый просмотр карт, ночной доступ, break-glass), инциденты → уведомление РКН за 24/72 ч | инциденты не замечаются |
+| **DLP** | InfoWatch Traffic Monitor / Solar Dozor | Контроль USB, печати, почты, мессенджеров на АРМ | бесконтрольные копии |
 | **Privacy Gate (CI/CD)** | OPA Conftest, Spectral (OpenAPI), Semgrep, Gitleaks | Релиз не проходит, если поле без тега или C4 уходит в партнёрский контракт; метрики → VictoriaMetrics | требование финального состояния |
-| **Service Mesh + PKI** | Istio / Linkerd + cert-manager | mTLS между сервисами, NetworkPolicy, zero trust | P-10 |
-| **ГОСТ VPN / NGFW** | ViPNet Coordinator / Континент | Филиалы, сегментация, изолированный VLAN ККТ | P-10 |
-| **Partner API Gateway** | Envoy / Kong | Отдельный периметр для партнёров: mTLS + OAuth2 client credentials, scopes, фильтрация полей по тегам, защита от BOLA | P-17, P-18 |
+| **Service Mesh + PKI** | Istio / Linkerd + cert-manager | mTLS между сервисами, NetworkPolicy, zero trust | плоская сеть |
+| **ГОСТ VPN / NGFW** | ViPNet Coordinator / Континент | Филиалы, сегментация, изолированный VLAN ККТ | плоская сеть |
+| **Partner API Gateway** | Envoy / Kong | Отдельный периметр для партнёров: mTLS + OAuth2 client credentials, scopes, фильтрация полей по тегам, защита от BOLA | избыточные данные партнёру |
 
 ## 3. Аналитический слой с учётом Privacy by Design
 
