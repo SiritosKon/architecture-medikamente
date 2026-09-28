@@ -10,14 +10,11 @@
 
 | № | Процесс |
 |---|---|
-| 01 | [Запись на приём и напоминание (MVP)](dfd/DFD-01-appointment.drawio.png) |
-| 02 | [Регистрация, договор, согласия](dfd/DFD-02-registration-consent.drawio.png) |
-| 03 | [Приём у врача и медкарта](dfd/DFD-03-medical-record.drawio.png) |
-| 04 | [Интеграция с лабораторией](dfd/DFD-04-lab-integration.drawio.png) |
-| 05 | [Оплата и фискализация](dfd/DFD-05-payments.drawio.png) |
-| 06 | [Кадры и зарплата](dfd/DFD-06-accounting-hr.drawio.png) |
-| 07 | [Склад и закупки](dfd/DFD-07-inventory.drawio.png) |
-| 08 | [Аналитика, BI и ML](dfd/DFD-08-analytics.drawio.png) |
+| 01 | [Запись и регистрация пациента (MVP)](dfd/DFD-01-appointment.drawio.png) |
+| 02 | [Приём у врача и медкарта](dfd/DFD-02-medical-record.drawio.png) |
+| 03 | [Интеграция с лабораторией](dfd/DFD-03-lab-integration.drawio.png) |
+| 04 | [Оплата и фискализация](dfd/DFD-04-payments.drawio.png) |
+| 05 | [Аналитика, BI и ML](dfd/DFD-05-analytics.drawio.png) |
 
 На каждой схеме показано, как данные проходят через систему. Меры защиты перечислены в фиолетовом блоке под схемой.
 
